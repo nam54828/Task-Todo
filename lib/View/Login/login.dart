@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_todo/View/BottomTabBar/HomePage.dart';
 import 'package:task_todo/View/ForgotPassword/forgot_password.dart';
 import 'package:task_todo/View/Register/register.dart';
 
@@ -105,7 +106,9 @@ class login extends StatelessWidget {
                 child: TextButton(onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword()));
                 }, child: Text("Forgot Password"))),
-            ElevatedButton(onPressed: (){},
+            ElevatedButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+            },
                 child: Container(
                   height: 50,
                   child: Center(
