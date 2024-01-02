@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_todo/Controller/home_controller.dart';
+import 'package:task_todo/Model/task_model.dart';
 import 'package:task_todo/View/Home/widgets/add_card.dart';
+import 'package:task_todo/View/Home/widgets/task_card.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  final homeCtrl = Get.find<HomeController>();
+  Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +56,14 @@ class Home extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              children: [AddCart()],
-            )
+         Obx(() =>    GridView.count(
+           crossAxisCount: 2,
+           shrinkWrap: true,
+           physics: ClampingScrollPhysics(),
+           children: [
+             ...homeCtrl.tasks.map((element) => TaskCard(taskModel: element)).toList(),
+             AddCart()],
+         ))
           ],
         ),
       ),
