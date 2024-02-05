@@ -7,6 +7,7 @@ import 'package:task_todo/View/Home/widgets/task_card.dart';
 
 class Home extends StatelessWidget {
   final homeCtrl = Get.find<HomeController>();
+
   Home({Key? key}) : super(key: key);
 
   @override
@@ -56,14 +57,28 @@ class Home extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-         Obx(() =>    GridView.count(
-           crossAxisCount: 2,
-           shrinkWrap: true,
-           physics: ClampingScrollPhysics(),
-           children: [
-             ...homeCtrl.tasks.map((element) => TaskCard(taskModel: element)).toList(),
-             AddCart()],
-         ))
+            Obx(() => GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  children: [
+                    ...homeCtrl.tasks
+                        .map((element) => LongPressDraggable(
+                      data: element,
+                      onDragStarted: () => homeCtrl.changeDeleting(true),
+                            onDraggableCanceled: (_,__) => homeCtrl.changeDeleting(false),
+                            onDragEnd: (_) => homeCtrl.changeDeleting(false),
+                            feedback: Opacity(
+                                opacity: 0.7,
+                                child: SizedBox(
+                                    height: 150,
+                                    width: 150,
+                                    child: TaskCard(taskModel: element))),
+                            child: TaskCard(taskModel: element)))
+                        .toList(),
+                    AddCart()
+                  ],
+                ))
           ],
         ),
       ),

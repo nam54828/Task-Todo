@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_todo/Controller/home_controller.dart';
+import 'package:task_todo/Model/task_model.dart';
 import 'package:task_todo/View/Home/page/crud_list.dart';
 import 'package:task_todo/View/Home/page/home.dart';
 import 'package:task_todo/View/Home/page/profile.dart';
@@ -14,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final homeCtrl = Get.find<HomeController>();
   int currentTab = 0;
   final List<Widget> screens = [crud_List(), Home(), profile(), Setting()];
 
@@ -27,13 +31,30 @@ class _HomePageState extends State<HomePage> {
         child: currentScreen,
         bucket: bucket,
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add, size: 32, color: Colors.white,),
-          backgroundColor: Colors.blue,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32)
-          ),
+      floatingActionButton: DragTarget<TaskModel>(
+        builder: (_,__,___){
+          return Obx(
+                () => FloatingActionButton(
+              onPressed: () {},
+              child: Icon(homeCtrl.deleting.value ? Icons.delete : Icons.add, size: 32, color: Colors.white,),
+              backgroundColor: homeCtrl.deleting.value ? Colors.red : Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32)
+              ),
+            ),
+          );
+        },
+        onAccept: (TaskModel taskModel){
+          homeCtrl.deleteTask(taskModel);
+          if(homeCtrl.deleteTask(taskModel) == true){
+            showDialog(context: context, builder: (_){
+              return AlertDialog(
+                title: Icon(Icons.done),
+                content: Text("Delete Success"),
+              );
+            });
+          }
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(

@@ -68,7 +68,8 @@ class TaskCard extends StatelessWidget {
                   height: 8,
                 ),
                 Text('${taskModel.todos?.length ?? 0} Task' ,style: TextStyle(
-                  color: Colors.grey
+                  color: Colors.grey,
+                  fontSize: 12
                 ),)
               ],
             ),
