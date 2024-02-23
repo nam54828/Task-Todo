@@ -10,6 +10,7 @@ class HomeController extends GetxController {
   final chipIndex = 0.obs;
   final deleting = false.obs;
   final tasks = <TaskModel>[].obs;
+  final task = Rx<TaskModel?>(null);
 
   void changeChipIndex(int value) {
     chipIndex.value = value;
@@ -38,4 +39,25 @@ class HomeController extends GetxController {
     tasks.remove(taskModel);
   }
 
+  void changeTask(TaskModel? select){
+    task.value = select;
+  }
+
+  updateTask(TaskModel taskModel, String title) {
+    var todos = taskModel.todos ?? [];
+    if(containerTodo(todos,title)) {
+    return false;
+    }
+    var todo = {'title':title, 'done': false};
+    todos.add(todo);
+    var newTask = taskModel.copyWith(todos: todos);
+    int oldIdx = tasks.indexOf(taskModel);
+    tasks[oldIdx] = newTask;
+    tasks.refresh();
+    return true;
+  }
+
+  bool containerTodo(List todos,String title) {
+    return todos.any((element) => element['title'] == title);
+  }
 }

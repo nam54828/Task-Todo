@@ -8,6 +8,7 @@ import 'package:task_todo/View/Home/page/crud_list.dart';
 import 'package:task_todo/View/Home/page/home.dart';
 import 'package:task_todo/View/Home/page/profile.dart';
 import 'package:task_todo/View/Home/page/setting.dart';
+import 'package:task_todo/View/Home/widgets/add_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,8 +36,18 @@ class _HomePageState extends State<HomePage> {
         builder: (_,__,___){
           return Obx(
                 () => FloatingActionButton(
-              onPressed: () {},
-              child: Icon(homeCtrl.deleting.value ? Icons.delete : Icons.add, size: 32, color: Colors.white,),
+                  onPressed: () {
+                    if (homeCtrl.tasks.isNotEmpty) {
+                      Get.to(() => AddDialog(), transition: Transition.downToUp);
+                    } else {
+                      Get.defaultDialog(
+                        title: "Warning",
+                        middleText: "Please create your task",
+                      );
+                    }
+                  },
+
+                  child: Icon(homeCtrl.deleting.value ? Icons.delete : Icons.add, size: 32, color: Colors.white,),
               backgroundColor: homeCtrl.deleting.value ? Colors.red : Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32)

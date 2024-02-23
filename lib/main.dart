@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_todo/View/Login/login.dart';
 import 'package:task_todo/View/Register/register.dart';
 import 'package:task_todo/Helper/init_controller.dart' as di;
 import 'package:get/get.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: register(),
+      home: login(),
     );
   }
 }
