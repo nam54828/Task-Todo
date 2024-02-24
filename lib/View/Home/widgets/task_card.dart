@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:task_todo/Controller/home_controller.dart';
 import 'package:task_todo/Model/task_model.dart';
+import 'package:task_todo/View/detail/view.dart';
 import 'package:task_todo/utils/extensions.dart';
 
 import 'add_dialog.dart';
@@ -19,7 +20,9 @@ class TaskCard extends StatelessWidget {
     final color = HexColor.fromHex(taskModel.color);
     return GestureDetector(
       onTap: (){
-        Get.to(AddDialog());
+        homeCtrl.changeTask(taskModel);
+        homeCtrl.changTodos(taskModel.todos ?? []);
+        Get.to(DetailPage());
       },
       child: Container(
         width: 200,
@@ -39,8 +42,8 @@ class TaskCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             StepProgressIndicator(
-              totalSteps: 100,
-              currentStep: 80,
+              totalSteps: homeCtrl.isTodosEmpty(taskModel) ? 1 : taskModel.todos!.length,
+              currentStep: homeCtrl.isTodosEmpty(taskModel) ? 0 : homeCtrl.getDoneTodo(taskModel),
               size: 5,
               padding: 0,
               selectedGradientColor: LinearGradient(
